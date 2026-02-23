@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Converter</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="canvas" width="32" height="32"></canvas>
+
+<div class="wrap">
+
+  <div class="badge"><span class="dot"></span> Image Converter</div>
+
+  <div class="hero">
+    <h1>Image → <span>Loadstring</span></h1>
+    <p>Convert any image into a Lua script.</p>
+    <button class="disc-btn">Discord</button>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Settings</span>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('url', this)">URL</button>
+      <button class="tab" onclick="switchTab('file', this)">File</button>
+    </div>
+
+    <div id="urlTab" class="field">
+      <label>Image URL</label>
+      <input type="url" id="imageUrl" placeholder="https://example.com/image.png">
+    </div>
+
+    <div id="fileTab" class="field" style="display:none">
+      <label>File</label>
+      <div class="upload" id="dropZone" onclick="document.getElementById('fileInput').click()">
+        <input type="file" id="fileInput" accept="image/*" onchange="handleFile(this)">
+        <div class="upload-text">Click to browse or drag & drop</div>
+        <div class="file-info" id="fileInfo">
+          <img class="file-thumb" id="fileThumb" src="" alt="">
+          <div>
+            <div class="file-name" id="fileName"></div>
+            <div class="file-sz" id="fileSize"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-block">
+      <div class="slider-head">
+        <span class="slider-label">Color reduction</span>
+        <span class="slider-val" id="sliderVal">Step 32</span>
+      </div>
+      <div class="slider-wrap">
+        <input type="range" id="quantSlider" min="0" max="4" step="1" value="2" oninput="updateSlider(this.value)">
+        <div class="slider-ticks">
+          <span>None</span>
+          <span>64</span>
+          <span>32</span>
+          <span>16</span>
+          <span>8</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="gen-btn" id="genBtn" onclick="generate()">Convert</button>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <div class="card-head">
+      <span class="card-title">Output</span>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-block">
+        <span class="preview-label">Original</span>
+        <img id="originalImg" src="" alt="original">
+      </div>
+      <span class="preview-arrow">→</span>
+      <div class="preview-block">
+        <span class="preview-label">32 × 32</span>
+        <canvas id="previewCanvas" width="32" height="32"></canvas>
+      </div>
+    </div>
+
+    <div class="prev-meta">Pixels: <b id="pixelCount">0</b></div>
+
+    <div class="out-head">
+      <span class="out-label">Lua script</span>
+      <button class="copy-btn" onclick="copyOut()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="9" y="9" width="13" height="13" rx="2"/>
+          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+        </svg>
+        Copy
+      </button>
+    </div>
+    <textarea id="outputBox" readonly></textarea>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">
+  <span id="toastMsg"></span>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
